@@ -8,9 +8,10 @@
           variant="outlined" 
           @change="handleFileChange"
           show-size
+          hide-details
         ></v-file-input>
 
-            <v-card class="mt-4 pa-4" v-if="file">
+            <v-card class="mt-4 pt-4" v-if="file">
               <v-card-text>
 
                 <v-slider
@@ -20,6 +21,7 @@
                   min="0.1"
                   max="1.0"
                   step="0.1"
+                  hide-details
                 ></v-slider>
               <v-card-title>Selected File Preview</v-card-title>
 
@@ -38,29 +40,51 @@
                 <v-icon v-else size="50">mdi-file</v-icon>
               </v-card-text>
             </v-card>
+        <v-row>
+          <v-col cols="4" class="pa-0">
+            <v-text-field v-model="putFile.hostPort" label="File Name" readonly hide-details></v-text-field>
+          </v-col>
+          <v-col cols="4" class="pa-0">
+            <v-text-field v-model="putFile.fileName" label="File Name" readonly hide-details></v-text-field>
+          </v-col>
+          <v-col cols="4" class="pa-0">
+            <v-text-field v-model="putFile.fileType" label="File Type" readonly hide-details></v-text-field>
+          </v-col>
+        </v-row>
+        <br>        
+        <br>
+        <br>
+        <v-row>
+          <v-col cols="4" class="pa-0 d-flex justify-center">
+            <v-btn color="error" @click="clearFile" class="mr-2">
+              Clear File
+            </v-btn>
+          </v-col>
+          <v-col cols="4" class="pa-0 d-flex justify-center">
+            <v-btn :disabled="!file" color="primary" @click="uploadFile">
+              Upload File
+            </v-btn>
+          </v-col>
+          <v-col cols="4" class="pa-0 d-flex justify-center">
+            <v-btn color="primary" @click="addToPicTable()">
+              Add
+            </v-btn>
+          </v-col>
+        </v-row>
+                
         
-        <v-text-field v-model="putFile.hostPort" label="File Name" readonly></v-text-field>
-        <v-text-field v-model="putFile.fileName" label="File Name" readonly></v-text-field>
-        <v-text-field v-model="putFile.fileType" label="File Type" readonly></v-text-field>        
-        <v-btn color="error" @click="clearFile" class="mr-2">
-          Clear File
-        </v-btn>
         
-        <v-btn :disabled="!file" color="primary" @click="uploadFile">
-          Upload File
-        </v-btn>
+        
 
 
-        <v-btn color="primary" @click="addToPicTable()">
-          Add
-        </v-btn>
+        
 
 
         
         <v-progress-circular v-if="isUploading" indeterminate color="primary" class="mt-3"></v-progress-circular>
         
         <v-alert v-if="putFile.uploadStatus" :type="statusType" class="mt-3">
-          {{ putFile.uploadStatus }}
+          <span v-html="putFile.uploadStatus"></span>
         </v-alert>
         
         <div v-if="putFile.resultDisplay" v-html="putFile.resultDisplay"></div>
@@ -76,6 +100,7 @@
 export default {
   data() {
     return {
+      statusType : null,
       mv : 1.0 ,
       file: null,
       isUploading: false,
@@ -114,17 +139,22 @@ export default {
         });
       }
     },
+    'statusType':function(nv,no){
+      console.log(nv)
+    }
   },
   methods: {
     // pic_name: '1701508059728.jpg', path: 'notePics/'
-    async addToPicTable() {
+    async addToPicTable(fileName,Path) {
         const result = await this.$a.ax({
           method: 'POST',
           url: `/crud/note/note_pics`,
-          data : { pic_name : this.putFile.fileName , path : this.putFile.filePath+'/'}
+          data : { pic_name : fileName , path :Path}
         });
         if (result.success) {
-          console.log(result.data)
+          return result.data;
+        }else{
+          return 0;
         }
     },
 
@@ -249,9 +279,23 @@ export default {
         );
 
         if (response.status === 200) {
-          const responseData = response.data;
-          this.putFile.resultDisplay = `<a href="${responseData.url}">${responseData.file_path}</a>`;
-          this.putFile.uploadStatus = 'File uploaded successfully!';
+          var mv_fileName = response.data.file_path.split('/').at(-1);
+          var mv_Path = response.data.file_path.split('/').slice(0, -1).join('/')+"/";
+          var mv_inf = await this.addToPicTable(mv_fileName,mv_Path);
+          
+
+          if(mv_inf !== 0){
+            console.log(mv_inf)
+            const responseData = response.data;
+            this.putFile.uploadStatus = 'id: '+mv_inf.id+'pic_name: '+mv_inf.pic_name+'path: '+mv_inf.path+'<br>File uploaded successfully And Add To Database successfully!';
+            this.putFile.resultDisplay = `<a href="${responseData.url}">${responseData.file_path}</a><br><img src="${responseData.url}" />`;
+          }else{
+            console.log(mv_inf)
+            const responseData = response.data;
+            
+            this.putFile.uploadStatus = 'File uploaded successfully But Add To Database  Not successfully!!';
+          }
+          
         }
       } catch (error) {
         this.putFile.uploadStatus = `Error: ${error.response?.data?.error || error.message}`;
