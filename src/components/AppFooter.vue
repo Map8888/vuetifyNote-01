@@ -48,6 +48,11 @@
       size="36"
       @click="$router.push('/ts3')"
     />
+    <v-icon
+      icon="mdi-map-marker"
+      size="36"
+      @click="$router.push('/locationView')"
+    />
     
     <template v-slot:loading>
       <!-- Custom spinner -->

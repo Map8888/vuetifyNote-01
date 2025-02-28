@@ -100,7 +100,8 @@
       </v-text-field>
 
     </v-footer>
-
+    
+    <NoteForm v-if="nt.currentNoteEdit.showForm" />
     
 
 </template>
@@ -110,6 +111,7 @@
   import NoteCard from '../components/notes/NoteCard.vue'
   import ShowLocation from '../components/notes/ShowLocation.vue'
   import FilesShow from '../components/notes/FilesShow.vue'
+  import NoteForm from '../components/notes/NoteForm.vue'
   export default {
     setup(){
       const nt = noteStore();
@@ -121,6 +123,7 @@
       NoteCard ,
       ShowLocation,
       FilesShow,
+      NoteForm,
     },
     data() {
       return {
@@ -142,7 +145,7 @@
         typeWaiting : 300 ,
         ShowLocationDisplay : false ,
         ShowPicsDisplay : false ,
-        NoteEditFormDisplay : false ,
+        // NoteEditFormDisplay : false ,
       };
     },
     mounted(){
@@ -260,18 +263,18 @@
           this.nt.currentShowPics = ''
         }
       },
-      'nt.currentNoteEditId':function(nv,ov){
-        if(nv !== -1){
-          this.NoteEditFormDisplay = true
-        }else{
-          this.NoteEditFormDisplay = false
-        }
-      },
-      'NoteEditFormDisplay':function(nv,ov){
-        if(nv == false){
-          this.nt.currentNoteEditId = -1
-        }
-      },      
+      // 'nt.currentNoteEditId':function(nv,ov){
+      //   if(nv !== -1){
+      //     this.NoteEditFormDisplay = true
+      //   }else{
+      //     this.NoteEditFormDisplay = false
+      //   }
+      // },
+      // 'NoteEditFormDisplay':function(nv,ov){
+      //   if(nv == false){
+      //     this.nt.currentNoteEditId = -1
+      //   }
+      // },      
 
 
     }

@@ -10,7 +10,7 @@
           show-size
           hide-details
         ></v-file-input>
-
+<br>
             <v-card class="mt-4 pt-4" v-if="file">
               <v-card-text>
 

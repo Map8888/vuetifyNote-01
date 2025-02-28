@@ -8,8 +8,14 @@ export const noteStore = defineStore('notestore', {
         currentShowLocation : "" ,
         currentShowPics : "" ,
         // NoteEditFormDisplay : false ,
-        currentNoteEditId : -1 ,
-        currentNoteEditOperation : '' ,
+        currentNoteEdit : {
+            showForm : false ,
+            listId : -1 ,
+            operation : '' ,
+            parent : 0 ,
+        } ,
+        
+        // currentNoteEditOperation : '' ,
 
 
     }),

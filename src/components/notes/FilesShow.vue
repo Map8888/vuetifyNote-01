@@ -14,9 +14,9 @@
 	    <v-carousel-item v-if="isImgFile(v.file_name)" :src="v.url" width="100vw" >
 	    	<v-row class="pt-3 d-flex justify-space-evenly">
 
-	      <v-chip size="small">index:&nbsp;{{ i + 1 }}/{{ links.length }}</v-chip>
-	      <v-chip size="small">path:&nbsp;{{v.file_name}}</v-chip>
-	      <v-chip size="small">id:&nbsp;{{v.id}}</v-chip>
+	      <v-chip variant="flat" color="secondary" size="small">index:&nbsp;{{ i + 1 }}/{{ links.length }}</v-chip>
+	      <v-chip variant="flat" color="secondary" size="small">path:&nbsp;{{v.file_name}}</v-chip>
+	      <v-chip variant="flat" color="secondary" size="small">id:&nbsp;{{v.id}}</v-chip>
 
 	    	</v-row>
 	    </v-carousel-item>
@@ -55,7 +55,7 @@ export default {
      // console.log(mv)
   },
   mounted(){
-  	console.log(this.str)
+  	// console.log(this.str)
   },
   methods : {
   	isImgFile(str){
@@ -83,13 +83,13 @@ export default {
   	    	for (var i = 0; i < this.links.length; i++) {
   	    		this.links[i].id = this.pics.find(item => item.path+item.pic_name === this.links[i].file_name).id
   	    	}
-  	    	console.log(this.link)
+  	    	// console.log(this.link)
   	    }
   	},
   },
   watch : {
 	'pics' : function(nv,ov){
-		console.log('pics',nv)
+		// console.log('pics',nv)
 		var mv = []
 		for (var i = 0; i < nv.length; i++) {
 			mv[mv.length] = nv[i].path+nv[i].pic_name
@@ -100,8 +100,8 @@ export default {
 		this.getLinks()
 	},
 	'links' : function(nv,ov){
-		console.log('links',nv)
-		console.log(nv)
+		// console.log('links',nv)
+		// console.log(nv)
 	}
   }
 }

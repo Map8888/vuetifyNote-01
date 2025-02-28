@@ -22,11 +22,11 @@
         
         <v-row class="mt-2 d-flex justify-space-evenly">
 
-           <v-btn icon variant="text" size="small">
-            <v-icon :color="nt.noteList[listId].done == true ? 'light-green-accent-4' : 'red-lighten-1'">
-          		{{ nt.noteList[listId].done == true ? 'mdi-check-bold' :'mdi-close-circle-outline'}}
-          	</v-icon>
-           </v-btn>
+          <v-btn icon variant="text" size="small">
+           <v-icon :color="nt.noteList[listId].done == true ? 'light-green-accent-4' : 'red-lighten-1'">
+         		{{ nt.noteList[listId].done == true ? 'mdi-check-bold' :'mdi-close-circle-outline'}}
+         	</v-icon>
+          </v-btn>
 
           <v-btn @click="nt.currentShowLocation = ( nt.currentShowLocation.length > 0 ? '' : nt.noteList[listId].location)" icon :color=" nt.noteList[listId].location.length > 0 ? 'blue-darken-2' : ''" variant="text" size="small">
             <v-icon>{{ nt.noteList[listId].location.length > 0 ? 'mdi-map-marker-multiple' : 'mdi-map-marker-outline' }}</v-icon>
@@ -36,11 +36,36 @@
             <v-icon>{{ nt.noteList[listId].pics.length > 0 ? 'mdi-tooltip-image' : 'mdi-tooltip-image-outline'}}</v-icon>
           </v-btn>
           
-          <v-btn icon variant="text" size="small">
+          <v-btn icon variant="text" size="small"
+            @click="nt.currentNoteEdit = { 
+              showForm : true ,
+              listId :  listId,
+              operation : 'edit' ,
+              parent : 0 ,
+            }"
+          >
             <v-icon>mdi-square-edit-outline</v-icon>
           </v-btn>
 
-          <v-btn icon variant="text" size="small">
+          <v-btn icon variant="text" size="small"
+            @click="nt.currentNoteEdit = { 
+              showForm : true ,
+              listId :  -1,
+              operation : 'add' ,
+              parent : 0 ,
+            }"
+          >
+            <v-icon>mdi-plus-circle-outline</v-icon>
+          </v-btn>
+
+          <v-btn icon variant="text" size="small"
+            @click="nt.currentNoteEdit = { 
+              showForm : true ,
+              listId :  listId,
+              operation : 'fork' ,
+              parent : nt.noteList[listId].id ,
+            }"
+          >
             <v-icon>mdi-source-merge</v-icon>
           </v-btn>
                     
@@ -53,6 +78,7 @@
         </v-row>
 
   </v-card>
+
 </template>
 
 <script>

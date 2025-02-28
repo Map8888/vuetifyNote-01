@@ -6,7 +6,7 @@ import Layouts from 'vite-plugin-vue-layouts'
 import Vue from '@vitejs/plugin-vue'
 import VueRouter from 'unplugin-vue-router/vite'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-
+import fs from 'fs'
 // Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
@@ -61,9 +61,12 @@ export default defineConfig({
       '.vue',
     ],
   },
-  server: {
-    // port: 3000,
-  },
+  // server: {
+  //   https: {
+  //     key: fs.readFileSync('./ssl/key.pem'),
+  //     cert: fs.readFileSync('./ssl/cert.pem')
+  //   }
+  // },
   css: {
     preprocessorOptions: {
       sass: {

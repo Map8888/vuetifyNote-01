@@ -1,9 +1,10 @@
 <template>
   <div
     class="floating-button"
-    :style="{ left: position.x + 'px', top: position.y + 'px' }"
+    :style="{ right: position.x + 'px', bottom: position.y + 'px' }"
     @mousedown="startDrag"
     @touchstart="startDrag"
+
   >
     
     <v-speed-dial
@@ -35,7 +36,7 @@
 export default {
   data() {
     return {
-      position: { x: 100, y: 100 }, // Initial position
+      position: { x: 10, y: 100 }, // Initial position
       isDragging: false,
       offset: { x: 0, y: 0 },
     };

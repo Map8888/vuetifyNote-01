@@ -86,7 +86,7 @@ export const AppStore = defineStore('appstore', {
       } finally {
         this.loading = false
       }
-    }
+    },
 
   },
 })
